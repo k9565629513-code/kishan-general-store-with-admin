@@ -1,38 +1,757 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Kishan Store - Admin</title><link rel="stylesheet" href="style.css">
-<style>
-.admin{max-width:1000px;margin:auto;padding:25px 5%}.form{background:#fff;padding:20px;border-radius:16px;box-shadow:0 3px 15px #0001;margin-bottom:25px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.form input,.form select{padding:12px;border:1px solid #ccd5c6;border-radius:9px}.primary,.danger{border:0;padding:10px 15px;border-radius:9px;cursor:pointer;font-weight:bold}.primary{background:#075b2a;color:#fff}.danger{background:#e53935;color:#fff}.admin-table{width:100%;border-collapse:collapse;background:#fff}.admin-table th,.admin-table td{padding:10px;border-bottom:1px solid #ddd;text-align:left}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}@media(max-width:600px){.form-grid{grid-template-columns:1fr}.admin-table{font-size:12px}.admin-table th:nth-child(3),.admin-table td:nth-child(3){display:none}}
-</style></head>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Kishan Store - Admin</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    /* ================= PASSWORD LOGIN ================= */
+
+    .login-page{
+      min-height:100vh;
+      background:#f7f8f2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .login-box{
+      width:100%;
+      max-width:400px;
+      background:white;
+      padding:30px;
+      border-radius:18px;
+      box-shadow:0 5px 25px #0002;
+      text-align:center;
+    }
+
+    .login-logo{
+      width:80px;
+      height:65px;
+      object-fit:contain;
+      margin-bottom:10px;
+    }
+
+    .login-box h2{
+      color:#075b2a;
+      margin-bottom:8px;
+    }
+
+    .login-box p{
+      color:#666;
+      font-size:14px;
+      margin-bottom:20px;
+    }
+
+    .password-input{
+      width:100%;
+      padding:13px;
+      border:1px solid #ccd5c6;
+      border-radius:9px;
+      font-size:15px;
+      outline:none;
+      margin-bottom:12px;
+    }
+
+    .password-input:focus{
+      border-color:#075b2a;
+    }
+
+    .login-btn{
+      width:100%;
+      border:0;
+      padding:12px;
+      border-radius:9px;
+      background:#075b2a;
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .login-btn:hover{
+      opacity:.9;
+    }
+
+    .wrong-password{
+      color:#e53935;
+      font-size:13px;
+      margin-top:12px;
+      display:none;
+    }
+
+
+    /* ================= ADMIN ================= */
+
+    .admin{
+      max-width:1000px;
+      margin:auto;
+      padding:25px 5%;
+    }
+
+    .form{
+      background:#fff;
+      padding:20px;
+      border-radius:16px;
+      box-shadow:0 3px 15px #0001;
+      margin-bottom:25px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .form input,
+    .form select{
+      padding:12px;
+      border:1px solid #ccd5c6;
+      border-radius:9px;
+    }
+
+    .primary,
+    .danger{
+      border:0;
+      padding:10px 15px;
+      border-radius:9px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .primary{
+      background:#075b2a;
+      color:#fff;
+    }
+
+    .danger{
+      background:#e53935;
+      color:#fff;
+    }
+
+    .admin-table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+    }
+
+    .admin-table th,
+    .admin-table td{
+      padding:10px;
+      border-bottom:1px solid #ddd;
+      text-align:left;
+    }
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+      gap:10px;
+    }
+
+
+    /* ================= LOGOUT ================= */
+
+    .logout{
+      background:#555;
+      color:white;
+      border:0;
+      padding:10px 15px;
+      border-radius:9px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+
+    /* ================= HIDDEN ADMIN ================= */
+
+    #adminPanel{
+      display:none;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width:600px){
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .admin-table{
+        font-size:12px;
+      }
+
+      .admin-table th:nth-child(3),
+      .admin-table td:nth-child(3){
+        display:none;
+      }
+
+      .top{
+        flex-wrap:wrap;
+      }
+
+      .top h2{
+        font-size:19px;
+      }
+
+      .login-box{
+        padding:25px 20px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
 <body>
-<header class="header"><div class="brand"><img src="assets/logo.png"><div><h1>Kishan General Store</h1><p>Admin Panel</p></div></div><a class="cart-btn" href="index.html" style="text-decoration:none">View Store</a></header>
-<main class="admin">
-<div class="top"><h2>🧑‍💼 Product Admin Panel</h2><button class="danger" onclick="resetProducts()">Reset Products</button></div>
-<div class="form">
-<h3>Add New Product</h3><br>
-<div class="form-grid">
-<input id="name" placeholder="Product name">
-<select id="cat"><option>Chocolates</option><option>Chips & Snacks</option><option>Oil & Ghee</option><option>Grocery</option><option>Tea & Beverages</option><option>Daily Needs</option></select>
-<input id="qty" placeholder="Quantity e.g. 500g">
-<input id="mrp" type="number" placeholder="MRP">
-<input id="price" type="number" placeholder="Selling price">
-<input id="emoji" placeholder="Emoji e.g. 🍫">
-</div><br><button class="primary" onclick="addProduct()">+ Add Product</button>
-</div>
-<table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Qty</th><th>MRP</th><th>Price</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table>
-</main>
-<script>
-const defaults=[["Dairy Milk", "Chocolates", "40g", 50, 40, "🍫"], ["KitKat", "Chocolates", "37g", 35, 30, "🍫"], ["5 Star", "Chocolates", "40g", 25, 20, "🍫"], ["Perk", "Chocolates", "22g", 15, 10, "🍫"], ["Munch", "Chocolates", "32g", 15, 10, "🍫"], ["Lay's Classic", "Chips & Snacks", "50g", 25, 20, "🥔"], ["Kurkure Masala", "Chips & Snacks", "55g", 25, 20, "🌶️"], ["Bingo Mad Angles", "Chips & Snacks", "60g", 25, 20, "🔺"], ["Haldiram Bhujia", "Chips & Snacks", "200g", 40, 30, "🥨"], ["Fortune Oil", "Oil & Ghee", "1 L", 175, 150, "🛢️"], ["Saffola Oil", "Oil & Ghee", "1 L", 205, 180, "🛢️"], ["Amul Ghee", "Oil & Ghee", "500 ml", 330, 300, "🧈"], ["Aashirvaad Atta", "Grocery", "5 kg", 320, 280, "🌾"], ["Rice", "Grocery", "5 kg", 390, 350, "🍚"], ["Sugar", "Grocery", "1 kg", 55, 50, "🧂"], ["Tata Salt", "Grocery", "1 kg", 30, 28, "🧂"], ["Toor Dal", "Grocery", "1 kg", 160, 140, "🫘"], ["Besan", "Grocery", "1 kg", 115, 100, "🌾"], ["Tata Tea", "Tea & Beverages", "250 g", 140, 120, "☕"], ["Red Label", "Tea & Beverages", "250 g", 150, 130, "☕"], ["Bournvita", "Tea & Beverages", "500 g", 260, 230, "🥤"], ["Cold Drink", "Tea & Beverages", "750 ml", 50, 45, "🥤"], ["Surf Excel", "Daily Needs", "1 kg", 180, 160, "🧺"], ["Lifebuoy Soap", "Daily Needs", "100 g", 40, 35, "🧼"], ["Colgate", "Daily Needs", "200 g", 125, 110, "🪥"], ["Dettol", "Daily Needs", "250 ml", 110, 95, "🧴"]];
-let products=JSON.parse(localStorage.getItem("kishanProducts")||"null")||defaults;
-function save(){localStorage.setItem("kishanProducts",JSON.stringify(products));}
-function show(){document.getElementById("rows").innerHTML=products.map((p,i)=>`<tr><td>${p[5]} ${p[0]}</td><td>${p[1]}</td><td>${p[2]}</td><td>₹${p[3]}</td><td>₹${p[4]}</td><td><button class="danger" onclick="del(${i})">Delete</button></td></tr>`).join("");}
-function addProduct(){
- const name=document.getElementById("name").value.trim(),cat=document.getElementById("cat").value,qty=document.getElementById("qty").value.trim(),mrp=Number(document.getElementById("mrp").value),price=Number(document.getElementById("price").value),emoji=document.getElementById("emoji").value.trim()||"🛒";
- if(!name||!qty||!mrp||!price){alert("सभी product details भरें.");return}
- products.push([name,cat,qty,mrp,price,emoji]);save();show();
- ["name","qty","mrp","price","emoji"].forEach(id=>document.getElementById(id).value="");alert("Product add हो गया!");
-}
-function del(i){if(confirm("इस product को delete करें?")){products.splice(i,1);save();show();}}
-function resetProducts(){if(confirm("सभी products default पर वापस करें?")){localStorage.removeItem("kishanProducts");location.reload();}}
-show();
-</script></body></html>
+
+
+  <!-- ================= PASSWORD PAGE ================= -->
+
+  <div id="loginPage" class="login-page">
+
+    <div class="login-box">
+
+      <img
+        src="C:\Users\DELL 3300\Downloads\kishan.png"
+        class="login-logo"
+        alt="Kishan General Store"
+      >
+
+      <h2>Kishan Admin Panel</h2>
+
+      <p>
+        Enter password to continue
+      </p>
+
+      <input
+        type="password"
+        id="password"
+        class="password-input"
+        placeholder="Enter Admin Password"
+        onkeydown="if(event.key==='Enter') login()"
+      >
+
+      <button
+        class="login-btn"
+        onclick="login()"
+      >
+        🔐 Login
+      </button>
+
+      <div
+        id="wrongPassword"
+        class="wrong-password"
+      >
+        ❌ Wrong password
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ================= ADMIN PANEL ================= -->
+
+  <div id="adminPanel">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+      <div class="brand">
+
+        <img
+          src="assets/logo.png"
+          alt="Kishan General Store"
+        >
+
+        <div>
+
+          <h1>Kishan General Store</h1>
+
+          <p>
+            Admin Panel
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div style="display:flex;gap:8px;align-items:center;">
+
+        <a
+          class="cart-btn"
+          href="index.html"
+          style="text-decoration:none"
+        >
+          View Store
+        </a>
+
+        <button
+          class="logout"
+          onclick="logout()"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ADMIN CONTENT -->
+
+    <main class="admin">
+
+
+      <div class="top">
+
+        <h2>
+           Product Admin Panel
+        </h2>
+
+        <button
+          class="danger"
+          onclick="resetProducts()"
+        >
+          Reset Products
+        </button>
+
+      </div>
+
+
+
+      <!-- ADD PRODUCT FORM -->
+
+      <div class="form">
+
+        <h3>
+          Add New Product
+        </h3>
+
+        <br>
+
+
+        <div class="form-grid">
+
+
+          <input
+            id="name"
+            placeholder="Product name"
+          >
+
+
+          <select id="cat">
+
+            <option>
+              Chocolates
+            </option>
+
+            <option>
+              Chips & Snacks
+            </option>
+
+            <option>
+              Oil & Ghee
+            </option>
+
+            <option>
+              Grocery
+            </option>
+
+            <option>
+              Tea & Beverages
+            </option>
+
+            <option>
+              Daily Needs
+            </option>
+
+          </select>
+
+
+          <input
+            id="qty"
+            placeholder="Quantity e.g. 500g"
+          >
+
+
+          <input
+            id="mrp"
+            type="number"
+            placeholder="MRP"
+          >
+
+
+          <input
+            id="price"
+            type="number"
+            placeholder="Selling price"
+          >
+
+
+          <input
+            id="emoji"
+            placeholder="Emoji e.g. 🍫"
+          >
+
+        </div>
+
+
+        <br>
+
+
+        <button
+          class="primary"
+          onclick="addProduct()"
+        >
+          + Add Product
+        </button>
+
+      </div>
+
+
+
+      <!-- PRODUCT TABLE -->
+
+      <table class="admin-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Product
+            </th>
+
+            <th>
+              Category
+            </th>
+
+            <th>
+              Qty
+            </th>
+
+            <th>
+              MRP
+            </th>
+
+            <th>
+              Price
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="rows"></tbody>
+
+      </table>
+
+
+    </main>
+
+  </div>
+
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+
+    /* ================= PASSWORD ================= */
+
+    /*
+      अपना Admin Password यहाँ बदल सकते हैं.
+    */
+
+    const ADMIN_PASSWORD = "Kishan@123";
+
+
+    function login(){
+
+      const password =
+        document.getElementById("password").value;
+
+      const wrong =
+        document.getElementById("wrongPassword");
+
+
+      if(password === ADMIN_PASSWORD){
+
+        document.getElementById("loginPage").style.display =
+          "none";
+
+        document.getElementById("adminPanel").style.display =
+          "block";
+
+        wrong.style.display = "none";
+
+        show();
+
+      }else{
+
+        wrong.style.display = "block";
+
+        document.getElementById("password").value = "";
+
+      }
+
+    }
+
+
+    function logout(){
+
+      document.getElementById("adminPanel").style.display =
+        "none";
+
+      document.getElementById("loginPage").style.display =
+        "flex";
+
+      document.getElementById("password").value = "";
+
+    }
+
+
+
+    /* ================= PRODUCTS ================= */
+
+    const defaults = [
+
+      ["Dairy Milk","Chocolates","40g",50,40,"🍫"],
+      ["KitKat","Chocolates","37g",35,30,"🍫"],
+      ["5 Star","Chocolates","40g",25,20,"🍫"],
+      ["Perk","Chocolates","22g",15,10,"🍫"],
+      ["Munch","Chocolates","32g",15,10,"🍫"],
+
+      ["Lay's Classic","Chips & Snacks","50g",25,20,"🥔"],
+      ["Kurkure Masala","Chips & Snacks","55g",25,20,"🌶️"],
+      ["Bingo Mad Angles","Chips & Snacks","60g",25,20,"🔺"],
+      ["Haldiram Bhujia","Chips & Snacks","200g",40,30,"🥨"],
+
+      ["Fortune Oil","Oil & Ghee","1 L",175,150,"🛢️"],
+      ["Saffola Oil","Oil & Ghee","1 L",205,180,"🛢️"],
+      ["Amul Ghee","Oil & Ghee","500 ml",330,300,"🧈"],
+
+      ["Aashirvaad Atta","Grocery","5 kg",320,280,"🌾"],
+      ["Rice","Grocery","5 kg",390,350,"🍚"],
+      ["Sugar","Grocery","1 kg",55,50,"🧂"],
+      ["Tata Salt","Grocery","1 kg",30,28,"🧂"],
+      ["Toor Dal","Grocery","1 kg",160,140,"🫘"],
+      ["Besan","Grocery","1 kg",115,100,"🌾"],
+
+      ["Tata Tea","Tea & Beverages","250 g",140,120,"☕"],
+      ["Red Label","Tea & Beverages","250 g",150,130,"☕"],
+      ["Bournvita","Tea & Beverages","500 g",260,230,"🥤"],
+      ["Cold Drink","Tea & Beverages","750 ml",50,45,"🥤"],
+
+      ["Surf Excel","Daily Needs","1 kg",180,160,"🧺"],
+      ["Lifebuoy Soap","Daily Needs","100 g",40,35,"🧼"],
+      ["Colgate","Daily Needs","200 g",125,110,"🪥"],
+      ["Dettol","Daily Needs","250 ml",110,95,"🧴"]
+
+    ];
+
+
+    let products =
+      JSON.parse(
+        localStorage.getItem("kishanProducts") || "null"
+      ) || defaults;
+
+
+
+    function save(){
+
+      localStorage.setItem(
+        "kishanProducts",
+        JSON.stringify(products)
+      );
+
+    }
+
+
+
+    function show(){
+
+      document.getElementById("rows").innerHTML =
+        products.map((p,i)=>`
+
+          <tr>
+
+            <td>
+              ${p[5]} ${p[0]}
+            </td>
+
+            <td>
+              ${p[1]}
+            </td>
+
+            <td>
+              ${p[2]}
+            </td>
+
+            <td>
+              ₹${p[3]}
+            </td>
+
+            <td>
+              ₹${p[4]}
+            </td>
+
+            <td>
+
+              <button
+                class="danger"
+                onclick="del(${i})"
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `).join("");
+
+    }
+
+
+
+    function addProduct(){
+
+      const name =
+        document.getElementById("name").value.trim();
+
+      const cat =
+        document.getElementById("cat").value;
+
+      const qty =
+        document.getElementById("qty").value.trim();
+
+      const mrp =
+        Number(document.getElementById("mrp").value);
+
+      const price =
+        Number(document.getElementById("price").value);
+
+      const emoji =
+        document.getElementById("emoji").value.trim()
+        || "🛒";
+
+
+      if(
+        !name ||
+        !qty ||
+        !mrp ||
+        !price
+      ){
+
+        alert(
+          "सभी product details भरें."
+        );
+
+        return;
+
+      }
+
+
+      products.push([
+        name,
+        cat,
+        qty,
+        mrp,
+        price,
+        emoji
+      ]);
+
+
+      save();
+
+      show();
+
+
+      [
+        "name",
+        "qty",
+        "mrp",
+        "price",
+        "emoji"
+      ].forEach(id=>{
+
+        document.getElementById(id).value = "";
+
+      });
+
+
+      alert(
+        "✅ Product add हो गया!"
+      );
+
+    }
+
+
+
+    function del(i){
+
+      if(
+        confirm(
+          "इस product को delete करें?"
+        )
+      ){
+
+        products.splice(i,1);
+
+        save();
+
+        show();
+
+      }
+
+    }
+
+
+
+    function resetProducts(){
+
+      if(
+        confirm(
+          "सभी products default पर वापस करें?"
+        )
+      ){
+
+        localStorage.removeItem(
+          "kishanProducts"
+        );
+
+        location.reload();
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
